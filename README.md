@@ -21,7 +21,8 @@ AWS credentials can also be set explicity using 'awskey' and 'awssecret' argumen
 ## Usage
 
 Usage: rule_editor [options]
-        --groupname GROUP_NAME       Require the security group name
+
+        --groupname GROUP_NAME       Require the security group name 
         --region [REGION]            The AWS region used for this operation
         --awskey [AWS_ACCESS_KEY_ID] The AWS access key id used for this operation
         --awssecret [AWS_SECRET_ACCESS_KEY]
