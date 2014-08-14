@@ -1,0 +1,142 @@
+#!/usr/bin/env ruby 
+require './helper/string'
+require 'aws-sdk'
+require 'optparse'
+require 'ostruct'
+require 'pp'
+
+
+
+module SecurityGroupRuleEditor
+
+  class Application
+
+    def initialize(args)
+      @options = setup_options(args)
+    end
+
+    def setup_options(args)
+      options = OpenStruct.new
+      options.library = []
+
+      opt_parser = OptionParser.new do |opts|
+
+        opts.on("--groupname GROUP_NAME",
+                "Require the security group name") do |group_name|
+          options.group_name = group_name
+        end
+
+        opts.on("--region [REGION]",
+                "The AWS region used for this operation") do |region|
+          options.region = region
+        end
+
+        opts.on("--awskey [AWS_ACCESS_KEY_ID]",
+                "The AWS access key id used for this operation") do |aws_key_id|
+          options.aws_key_id = aws_key_id
+        end
+
+        opts.on("--awssecret [AWS_SECRET_ACCESS_KEY]",
+                "The AWS secret access key used for this operation") do |access_secret|
+          options.access_secret = access_secret
+        end
+
+        opts.on("--iprangesf [IP RANGE]",
+                "The IP ranges used to search for matched rules") do |ip_ranges|
+          options.ip_ranges_filter = ip_ranges
+        end
+
+        opts.on("--protocolf [PROTOCOL]",
+                "The protocol used to search for matched rules") do |protocol|
+          options.protocol_filter = protocol
+        end
+
+        opts.on("--portrangef [PORT_RANGE]",
+                "The port range used to search for matched rules") do |port_range|
+          options.port_range_filter = port_range
+        end
+
+
+        opts.on("--ipranges [IP RANGE]",
+                "The new IP ranges of the matched rules") do |ip_ranges|
+          options.ip_ranges = ip_ranges
+        end
+
+        opts.on("--protocol [PROTOCOL]",
+                "The new protocol of the matched rules") do |protocol|
+          options.protocol= protocol
+        end
+
+        opts.on("--portrange [PORT_RANGE]",
+                "The port range of the matched rules") do |port_range|
+          options.port_range = port_range
+        end
+
+
+        opts.on_tail("-h", "--help", "Help info") do
+          exit
+        end
+      end
+      opt_parser.parse!(args)
+      options
+    end 
+
+    def run
+      ec2 = get_ec2_service
+      security_group = ec2.security_groups.filter("group-name",@options.group_name).first
+
+      if security_group.nil?
+        puts "Security group not found"
+        return
+      end
+      matched_rules = get_matched_rules(security_group)
+      matched_rules.each_with_index do |r,i|
+        edit_rule(r)
+        puts "Rule #{i+1} is updated"
+      end
+
+    end
+
+    def get_ec2_service
+      if @options.aws_key_id && @options.access_secret
+        ec2 = AWS::EC2.new(
+          :access_key_id => @options.aws_key_id,
+          :secret_access_key => @options.access_secret)
+      else
+          ec2 = AWS::EC2.new
+      end
+    end
+
+    def get_matched_rules(security_group)
+      security_group.ingress_ip_permissions.select do |rule|
+        (@options.ip_ranges_filter.nil? || rule.ip_ranges.include?(@options.ip_ranges_filter)) \
+        && (@options.protocol_filter.nil? || rule.protocol.to_s == @options.protocol_filter) \
+        && (@options.port_range_filter.nil? || rule.port_range == @options.port_range_filter.to_range)
+      end
+    end
+
+    def edit_rule(ip_permission)
+      new_protocol = @options.protocol.nil? ? ip_permission.protocol : @options.protocol.nil?
+      new_ip_ranges = @options.ip_ranges.nil? ? ip_permission.ip_ranges : [@options.ip_ranges]
+      new_port_range = @options.port_range.nil? ? ip_permission.port_range : @options.port_range.to_range
+      new_ip_permission = AWS::EC2::SecurityGroup::IpPermission.new(
+          ip_permission.security_group,
+          new_protocol,
+          new_port_range,
+          {:ip_ranges => new_ip_ranges, :groups => ip_permission.groups
+          }
+      )
+      ip_permission.revoke
+      new_ip_permission.authorize
+    end
+
+  end
+end  
+
+rule_editor = SecurityGroupRuleEditor::Application.new(ARGV)
+rule_editor.run
+
+
+
+
+
