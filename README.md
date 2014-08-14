@@ -4,17 +4,16 @@ A tool to update the rules of AWS security groups
 
 ## Setting up
 
-  Install aws-sdk gem:
-    gem install aws-sdk
-  Running the following command to make rule_editor executable:
-    chmod +x rule_editor
+  1/ Install aws-sdk gem: gem install aws-sdk
+    
+  2/ Run the following command to make rule_editor executable: chmod +x rule_editor
 
 ## AWS Credentials Configuration
 Default AWS Credentials can be set in the following ways:
 
-1/Environment Variables – AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY. The SDK for Ruby uses the ENVProvider class to load these credentials.
+1/ Environment Variables – AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY. The SDK for Ruby uses the ENVProvider class to load these credentials.
 
-2/The default credential profiles file – typically located at ~/.aws/credentials (the location may vary per platform), this YAML-formatted credentials file is shared by many of the AWS SDKs and the AWS CLI. The SDK for Ruby uses the SharedCredentialFileProvider to load these credentials.
+2/ The default credential profiles file – typically located at ~/.aws/credentials (the location may vary per platform), this YAML-formatted credentials file is shared by many of the AWS SDKs and the AWS CLI. The SDK for Ruby uses the SharedCredentialFileProvider to load these credentials.
 
 AWS credentials can also be set explicity using 'awskey' and 'awssecret' arguments
 
