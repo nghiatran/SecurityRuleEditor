@@ -117,7 +117,7 @@ module SecurityGroupRuleEditor
     end
 
     def edit_rule(ip_permission)
-      new_protocol = @options.protocol.nil? ? ip_permission.protocol : @options.protocol.nil?
+      new_protocol = @options.protocol.nil? ? ip_permission.protocol : @options.protocol
       new_ip_ranges = @options.ip_ranges.nil? ? ip_permission.ip_ranges : [@options.ip_ranges]
       new_port_range = @options.port_range.nil? ? ip_permission.port_range : @options.port_range.to_range
       new_ip_permission = AWS::EC2::SecurityGroup::IpPermission.new(
