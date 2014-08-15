@@ -21,18 +21,18 @@ AWS credentials can also be set explicity using 'awskey' and 'awssecret' argumen
 
 Usage: rule_editor [options]
 
-        --groupname GROUP_NAME       Require the security group name 
-        --region [REGION]            The AWS region used for this operation
+        --groupname GROUP_NAME       Require the security group name
+        --region [REGION]            The AWS region used for this operation, (e.g., us-east-1)
         --awskey [AWS_ACCESS_KEY_ID] The AWS access key id used for this operation
         --awssecret [AWS_SECRET_ACCESS_KEY]
                                      The AWS secret access key used for this operation
-        --iprangesf [IP RANGE]       The IP ranges used to search for matched rules
-        --protocolf [PROTOCOL]       The protocol used to search for matched rules
-        --portrangef [PORT_RANGE]    The port range used to search for matched rules
-        --ipranges [IP RANGE]        The new IP ranges of the matched rules
-        --protocol [PROTOCOL]        The new protocol of the matched rules
-        --portrange [PORT_RANGE]     The port range of the matched rules
-    -h, --help                       Help info
+        --iprangesf [IP RANGE]       The IP ranges used to search for matched rules, (e.g., 127.155.127.155/32)
+        --protocolf [PROTOCOL]       The protocol used to search for matched rules, (e.g., tcp, icmp)
+        --portrangef [PORT_RANGE]    The port range used to search for matched rules, (e.g., 80..80)
+        --ipranges [IP RANGE]        The new IP ranges of the matched rules, (e.g., 127.155.127.155/32)
+        --protocol [PROTOCOL]        The new protocol of the matched rules, (e.g., tcp, icmp)
+        --portrange [PORT_RANGE]     The port range of the matched rules, (e.g., 80..80)
+    -h, --help                       Help info                   Help info
 
 
 

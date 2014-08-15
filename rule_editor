@@ -27,7 +27,7 @@ module SecurityGroupRuleEditor
         end
 
         opts.on("--region [REGION]",
-                "The AWS region used for this operation") do |region|
+                "The AWS region used for this operation, (e.g., us-east-1)") do |region|
           options.region = region
         end
 
@@ -42,38 +42,39 @@ module SecurityGroupRuleEditor
         end
 
         opts.on("--iprangesf [IP RANGE]",
-                "The IP ranges used to search for matched rules") do |ip_ranges|
+                "The IP ranges used to search for matched rules, (e.g., 127.155.127.155/32)") do |ip_ranges|
           options.ip_ranges_filter = ip_ranges
         end
 
         opts.on("--protocolf [PROTOCOL]",
-                "The protocol used to search for matched rules") do |protocol|
+                "The protocol used to search for matched rules, (e.g., tcp, icmp)") do |protocol|
           options.protocol_filter = protocol
         end
 
         opts.on("--portrangef [PORT_RANGE]",
-                "The port range used to search for matched rules") do |port_range|
+                "The port range used to search for matched rules, (e.g., 80..80)") do |port_range|
           options.port_range_filter = port_range
         end
 
 
         opts.on("--ipranges [IP RANGE]",
-                "The new IP ranges of the matched rules") do |ip_ranges|
+                "The new IP ranges of the matched rules, (e.g., 127.155.127.155/32)") do |ip_ranges|
           options.ip_ranges = ip_ranges
         end
 
         opts.on("--protocol [PROTOCOL]",
-                "The new protocol of the matched rules") do |protocol|
+                "The new protocol of the matched rules, (e.g., tcp, icmp)") do |protocol|
           options.protocol= protocol
         end
 
         opts.on("--portrange [PORT_RANGE]",
-                "The port range of the matched rules") do |port_range|
+                "The port range of the matched rules, (e.g., 80..80)") do |port_range|
           options.port_range = port_range
         end
 
 
         opts.on_tail("-h", "--help", "Help info") do
+          puts opts
           exit
         end
       end
