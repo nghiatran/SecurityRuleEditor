@@ -17,7 +17,6 @@ module SecurityGroupRuleEditor
 
     def setup_options(args)
       options = OpenStruct.new
-      options.library = []
 
       opt_parser = OptionParser.new do |opts|
 
