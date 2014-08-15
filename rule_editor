@@ -127,8 +127,10 @@ module SecurityGroupRuleEditor
           {:ip_ranges => new_ip_ranges, :groups => ip_permission.groups
           }
       )
-      ip_permission.revoke
-      new_ip_permission.authorize
+      unless new_ip_permission.eql? ip_permission
+        new_ip_permission.authorize
+        ip_permission.revoke
+      end
     end
 
   end
