@@ -101,7 +101,8 @@ module SecurityGroupRuleEditor
       if @options.aws_key_id && @options.access_secret
         ec2 = AWS::EC2.new(
           :access_key_id => @options.aws_key_id,
-          :secret_access_key => @options.access_secret)
+          :secret_access_key => @options.access_secret,
+          :region => @options.region)
       else
           ec2 = AWS::EC2.new
       end
